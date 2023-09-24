@@ -1,4 +1,4 @@
-# Practica 3 
+# Practica 4 - Umbralizaciones
 ## Integrantes
 | Integrante | Github |
 | ------ | ------ |
