@@ -16,7 +16,7 @@ if __name__ == "__main__":
     img3B = bersen.BersenThreshold(img3,19,35,186)
     img2B = space_color.invert_binary(img2B)
     img1G = globalT.global_thresholding(img1, 150)
-    img2G = globalT.global_thresholding(img2, 32)
+    img2G = globalT.global_thresholding(img2, 100)
     img3G = globalT.global_thresholding(img3, 50)
     img2G = space_color.invert_binary(img2G)
     #Deteccion de componentes 
@@ -89,42 +89,42 @@ if __name__ == "__main__":
     plt.title("Componentes U. Bernsen")
     plt.show()
     
-    plt.figure(2,figsize=(12, 12))
+    plt.figure(3,figsize=(12, 12))
 
     plt.subplot(3, 3, 1)
     plt.imshow(img1, cmap='gray')
     plt.title('Imagen Original')
-
+    plt.axis("off")
     plt.subplot(3, 3, 2)
     plt.imshow(img1G, cmap='gray')
     plt.title('Umbral Global')
-
+    plt.axis("off")
     plt.subplot(3, 3, 3)
     plt.imshow(img1GC, cmap='nipy_spectral')
     plt.title('Componentes conectados')
-
+    plt.axis("off")
     plt.subplot(3, 3, 4)
     plt.imshow(img2, cmap='gray')
     plt.title('Imagen Original')
-
+    plt.axis("off")
     plt.subplot(3, 3, 5)
     plt.imshow(img2G, cmap='gray')
     plt.title('Umbral Global')
-
+    plt.axis("off")
     plt.subplot(3, 3, 6)
     plt.imshow(img2GC, cmap='nipy_spectral')
     plt.title('Componentes Conectados')
-
+    plt.axis("off")
     plt.subplot(3, 3, 7)
     plt.imshow(img3, cmap='gray')
     plt.title('Imagen Original')
-
+    plt.axis("off")
     plt.subplot(3, 3, 8)
     plt.imshow(img3G, cmap='gray')
     plt.title('Umbral Global')
-
+    plt.axis("off")
     plt.subplot(3, 3, 9)
     plt.imshow(img3GC, cmap='nipy_spectral')
     plt.title('Componentes Conectados')
-
+    plt.axis("off")
     plt.show()
