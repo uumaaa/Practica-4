@@ -1,4 +1,4 @@
-from Thresholding import bersen, globalT
+from Thresholding import bersen, globalT, otsu
 from Color import space_color
 from Components import component_detection
 
@@ -10,15 +10,41 @@ if __name__ == "__main__":
     img1 = cv.imread("carretera.jpg",cv.IMREAD_GRAYSCALE)
     img2 = cv.imread("image-cell.png",cv.IMREAD_GRAYSCALE)
     img3 = cv.imread("person_bacteria.jpeg",cv.IMREAD_GRAYSCALE)
+
+
     # Umbralizacion adaptativa
     img1B = bersen.BersenThreshold(img1,2,30,147)
     img2B = bersen.BersenThreshold(img2,2,35,250,2)
     img3B = bersen.BersenThreshold(img3,19,35,186)
     img2B = space_color.invert_binary(img2B)
+
+    # Umbralizacion global
     img1G = globalT.global_thresholding(img1, 150)
     img2G = globalT.global_thresholding(img2, 100)
     img3G = globalT.global_thresholding(img3, 50)
     img2G = space_color.invert_binary(img2G)
+
+    #Umbralizacion Otsu (se obtiene el umbral de la función)
+    umbral1 = otsu.otsu(img1)
+    umbral2 = otsu.otsu(img2)
+    umbral3 = otsu.otsu(img3)
+
+    #Se aplica la umbralización con el umbral obtenido por Otsu
+    img1O = img1.copy()
+    img1O[img1O > umbral1] = 255
+    img1O[img1O <= umbral1] = 0
+    img2O = img2.copy()
+    img2O[img2O > umbral2] = 255
+    img2O[img2O <= umbral2] = 0
+    img2O = space_color.invert_binary(img2O)
+
+    img3O = img3.copy()
+    img3O[img3O > umbral3] = 255
+    img3O[img3O <= umbral3] = 0
+
+
+
+
     #Deteccion de componentes 
     img1BC = component_detection.conntected_components(img1B)
     img2BC = component_detection.conntected_components(img2B)
@@ -26,6 +52,9 @@ if __name__ == "__main__":
     img1GC = component_detection.conntected_components(img1G)
     img2GC = component_detection.conntected_components(img2G)
     img3GC = component_detection.conntected_components(img3G)
+    img1OC = component_detection.conntected_components(img1O)
+    img2OC = component_detection.conntected_components(img2O)
+    img3OC = component_detection.conntected_components(img3O)
 
     plt.figure(1,figsize=(8,8))
     plt.subplot(3,4,1)
@@ -128,3 +157,44 @@ if __name__ == "__main__":
     plt.title('Componentes Conectados')
     plt.axis("off")
     plt.show()
+    
+    #Visualización de la umbralización y componentes conectados por el método de Otsu
+    plt.figure(4,figsize=(12, 12)) 
+    plt.subplot(3, 3, 1)
+    plt.imshow(img1, cmap='gray')
+    plt.title('Imagen Original')
+    plt.axis("off")
+    plt.subplot(3, 3, 2)
+    plt.imshow(img1O, cmap='gray')
+    plt.title('Umbral Otsu')
+    plt.axis("off")
+    plt.subplot(3, 3, 3)
+    plt.imshow(img1OC, cmap='nipy_spectral')
+    plt.title('Componentes Conectados')
+    plt.axis("off")
+    plt.subplot(3, 3, 4)
+    plt.imshow(img2, cmap='gray')
+    plt.title('Imagen Original')
+    plt.axis("off")
+    plt.subplot(3, 3, 5)
+    plt.imshow(img2O, cmap='gray')
+    plt.title('Umbral Otsu')
+    plt.axis("off")
+    plt.subplot(3, 3, 6)
+    plt.imshow(img2OC, cmap='nipy_spectral')
+    plt.title('Componentes Conectados')
+    plt.axis("off")
+    plt.subplot(3, 3, 7)
+    plt.imshow(img3, cmap='gray')
+    plt.title('Imagen Original')
+    plt.axis("off")
+    plt.subplot(3, 3, 8)
+    plt.imshow(img3O, cmap='gray')
+    plt.title('Umbral Otsu')
+    plt.axis("off")
+    plt.subplot(3, 3, 9)
+    plt.imshow(img3OC, cmap='nipy_spectral')
+    plt.title('Componentes Conectados')
+    plt.axis("off")
+    plt.show()
+
